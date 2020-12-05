@@ -3,7 +3,7 @@
     <transition-group :name="direction === 1? 'home-slide': 'home-slide-out'" mode="out-in">
       <HomeSlide1 key="1" @next="slide++" v-if="slide === 1 || isDev" class="mb-4"/>
 
-      <HomeSlide2 key="2" @next="slide++" @prev="slide--" v-if="slide === 2 || isDev" class="mb-4"/>
+      <HomeSlide2 key="2" v-model="form" @next="slide++" @prev="slide--" v-if="slide === 2 || isDev" class="mb-4"/>
 
       <HomeSlide3 key="3" @next="slide++" @prev="slide--" v-if="slide === 3 || isDev"/>
     </transition-group>
@@ -25,13 +25,19 @@ export default {
       slide: 1,
       lastSlide: 1,
       direction: 1,
-      isDev: false
+      isDev: false,
+
+      form: null
     }
   },
 
   watch: {
     slide (val) {
       this.direction = val > this.lastSlide ? 1 : -1
+
+      if (val === 1) {
+        this.form = null
+      }
 
       this.$nextTick(() => {
         this.lastSlide = val
