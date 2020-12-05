@@ -2,3 +2,28 @@
 
 @import '~bootstrap/scss/bootstrap';
 @import '~bootstrap-vue/src/index';
+
+
+.home-slide-leave-active,
+.home-slide-enter-active {
+  transition: .45s;
+}
+.home-slide-enter {
+  transform: translate(200%, 0);
+}
+.home-slide-leave-to {
+  position: absolute;
+  transform: translate(-200%, 0);
+}
+
+.home-slide-out-leave-active,
+.home-slide-out-enter-active {
+  transition: .45s;
+}
+.home-slide-out-enter {
+  transform: translate(-200%, 0);
+}
+.home-slide-out-leave-to {
+  position: absolute;
+  transform: translate(200%, 0);
+}

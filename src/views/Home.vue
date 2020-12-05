@@ -1,8 +1,12 @@
 <template>
-  <div class="home">
-    <HomeSlide1 class="mb-4"/>
+  <div class="home pb-4">
+    <transition-group :name="direction === 1? 'home-slide': 'home-slide-out'" mode="out-in">
+      <HomeSlide1 key="1" @next="slide++" v-if="slide === 1 || isDev" class="mb-4"/>
 
-    <HomeSlide2/>
+      <HomeSlide2 key="2" @next="slide++" @prev="slide--" v-if="slide === 2 || isDev" class="mb-4"/>
+
+      <HomeSlide3 key="3" @next="slide++" @prev="slide--" v-if="slide === 3 || isDev"/>
+    </transition-group>
   </div>
 </template>
 
@@ -10,10 +14,30 @@
 
 import HomeSlide1 from '@/components/HomeSlide1'
 import HomeSlide2 from '@/components/HomeSlide2'
+import HomeSlide3 from '@/components/HomeSlide3'
 
 export default {
   name: 'Home',
-  components: { HomeSlide2, HomeSlide1 },
+  components: { HomeSlide3, HomeSlide2, HomeSlide1 },
+
+  data () {
+    return {
+      slide: 1,
+      lastSlide: 1,
+      direction: 1,
+      isDev: false
+    }
+  },
+
+  watch: {
+    slide (val) {
+      this.direction = val > this.lastSlide ? 1 : -1
+
+      this.$nextTick(() => {
+        this.lastSlide = val
+      })
+    }
+  }
 }
 </script>
 

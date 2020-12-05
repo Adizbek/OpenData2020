@@ -8,7 +8,7 @@
         Narxni baholay olmayapsizmi? <br> Unda biz sizga yordam beramiz!
       </div>
 
-      <b-button size="lg" variant="outline-primary" class="mt-4">
+      <b-button size="lg" variant="outline-primary" class="mt-4" @click="$emit('next')">
         <b-icon-search class="mr-2"/>
         Aniqlash
       </b-button>
