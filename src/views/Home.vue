@@ -4,8 +4,6 @@
       <HomeSlide1 key="1" @next="slide++" v-if="slide === 1 || isDev" class="mb-4"/>
 
       <HomeSlide2 key="2" v-model="form" @priceInfo="onPriceInfo" @next="slide++" @prev="slide--" v-if="slide === 2 || isDev" class="mb-4"/>
-
-      <HomeSlide3 key="3" :info="prices" @next="slide++" @prev="slide--" v-if="slide === 3 || isDev"/>
     </transition-group>
   </div>
 </template>
@@ -14,11 +12,10 @@
 
 import HomeSlide1 from '@/components/HomeSlide1'
 import HomeSlide2 from '@/components/HomeSlide2'
-import HomeSlide3 from '@/components/HomeSlide3'
 
 export default {
   name: 'Home',
-  components: { HomeSlide3, HomeSlide2, HomeSlide1 },
+  components: { HomeSlide2, HomeSlide1 },
 
   data () {
     return {
@@ -84,6 +81,13 @@ export default {
   padding: 2rem;
   background: white;
   width: 600px;
+  max-width: 90%;
+}
+.home-card-wide {
+  border-radius: 4px;
+  padding: 2rem;
+  background: white;
+  width: 1200px;
   max-width: 90%;
 }
 </style>
