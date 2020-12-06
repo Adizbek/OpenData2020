@@ -32,15 +32,67 @@
 
         <div class="mt-4">Narxlar <b>{{ info.similar_ads_total }}</b> ta e'lon asosida taklif qilindi</div>
       </div>
+
+
+      <div class="mt-5">
+        <line-chart
+            :chartdata="chartKmValues"
+            :options="chartKmOptions"/>
+      </div>
+
+      <div class="mt-5">
+        <line-chart
+            :chartdata="chartYearValues"
+            :options="chartYearOptions"/>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+
+import LineChart from '@/components/LineChart'
 export default {
   name: 'HomeSlide3',
+  components: { LineChart },
   props: {
     info: {}
+  },
+
+
+  data () {
+    let labelsKm = this.info.stats_by_driven_km.map(x => x.driven_km + ' km')
+    let labelsYear = this.info.stats_by_manufactured_year.map(x => x.manufactured_year + ' yil')
+
+    return {
+      chartKmOptions: {
+        responsive: true,
+        maintainAspectRatio: false
+      },
+
+      chartYearOptions: {
+        responsive: true,
+        maintainAspectRatio: false
+      },
+
+      chartKmValues: {
+        labels: labelsKm,
+        datasets: [{
+          label: 'Narx',
+          backgroundColor: '#8298e3',
+          data: this.info.stats_by_driven_km.map(x => x.avg_price_usd)
+        }]
+      },
+
+      chartYearValues: {
+        labels: labelsYear,
+        datasets: [{
+          label: 'Narx',
+          backgroundColor: '#9ce382',
+          data: this.info.stats_by_manufactured_year.map(x => x.avg_price_usd)
+        }]
+      },
+    }
   },
 
   methods: {
