@@ -18,25 +18,25 @@
 
         <b-col sm="4">
           <b-form-group label="Model">
-            <b-form-select v-model="form.model" :options="models" text-field="name" value-field="id"/>
+            <b-form-select v-model="form.model_id" :options="models" text-field="name" value-field="id"/>
           </b-form-group>
         </b-col>
 
         <b-col sm="4">
           <b-form-group label="Uzatmalar qutisi">
-            <b-form-select :options="transmissions" value-field="id" v-model="form.transmission"/>
+            <b-form-select :options="transmissions" value-field="id" v-model="form.transmission_type"/>
           </b-form-group>
         </b-col>
 
         <b-col sm="4">
           <b-form-group label="Year">
-            <b-form-input v-model="form.year"/>
+            <b-form-input v-model="form.manufactured_year"/>
           </b-form-group>
         </b-col>
 
         <b-col sm="4">
           <b-form-group label="Bosgan yo‘li">
-            <b-form-input v-model="form.km"/>
+            <b-form-input v-model="form.driven_km"/>
           </b-form-group>
         </b-col>
 
@@ -47,7 +47,7 @@
         </b-col>
       </b-form-row>
 
-      <b-button @click="$emit('next')" class="mt-3" variant="primary" block>Aniqlash</b-button>
+      <b-button @click="findPrice" class="mt-3" variant="primary" block>Aniqlash</b-button>
     </div>
   </div>
 </template>
@@ -58,7 +58,12 @@ export default {
   name: 'HomeSlide2',
 
   chimera: {
-    brandsApi: '/vehicle/reference/'
+    brandsApi: '/vehicle/reference/',
+
+    findPrice: {
+      url: '/vehicle/buyer/recommendations_by_parameters/',
+      auto: false,
+    }
   },
 
   props: {
@@ -68,13 +73,15 @@ export default {
   data () {
     return {
       form: this.value || {
-        brand_id: null,
-        model_id: null,
-        year: 2020,
-        km: 0,
-        transmission: 'manual',
-        condition: 'good'
-      }
+        brand_id: undefined,
+        model_id: undefined,
+        manufactured_year: undefined,
+        driven_km: undefined,
+        transmission_type: undefined,
+        condition: undefined
+      },
+
+      priceInfo: null
     }
   },
 
@@ -110,6 +117,18 @@ export default {
         { id: 'mediocre', text: 'Среднее' },
         { id: 'needs_repairs', text: 'Требует ремонта' },
       ]
+    }
+  },
+
+  methods: {
+    findPrice () {
+      this.$chimera.findPrice.send(this.form).then(({ data }) => {
+        if (data) {
+          this.priceInfo = data
+
+          this.$emit('priceInfo', this.priceInfo)
+        }
+      })
     }
   },
 

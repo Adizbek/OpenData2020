@@ -3,9 +3,9 @@
     <transition-group :name="direction === 1? 'home-slide': 'home-slide-out'" mode="out-in">
       <HomeSlide1 key="1" @next="slide++" v-if="slide === 1 || isDev" class="mb-4"/>
 
-      <HomeSlide2 key="2" v-model="form" @next="slide++" @prev="slide--" v-if="slide === 2 || isDev" class="mb-4"/>
+      <HomeSlide2 key="2" v-model="form" @priceInfo="onPriceInfo" @next="slide++" @prev="slide--" v-if="slide === 2 || isDev" class="mb-4"/>
 
-      <HomeSlide3 key="3" @next="slide++" @prev="slide--" v-if="slide === 3 || isDev"/>
+      <HomeSlide3 key="3" :info="prices" @next="slide++" @prev="slide--" v-if="slide === 3 || isDev"/>
     </transition-group>
   </div>
 </template>
@@ -27,7 +27,16 @@ export default {
       direction: 1,
       isDev: false,
 
-      form: null
+      form: null,
+
+      prices: {}
+    }
+  },
+
+  methods: {
+    onPriceInfo(prices) {
+      this.prices = prices;
+      this.slide++;
     }
   },
 
@@ -74,7 +83,7 @@ export default {
   border-radius: 4px;
   padding: 2rem;
   background: white;
-  width: 500px;
+  width: 600px;
   max-width: 90%;
 }
 </style>
