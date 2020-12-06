@@ -230,6 +230,7 @@ export default {
   watch: {
     form: {
       deep: true,
+      immediate: true,
       handler (v) {
         this.$emit('input', v)
 

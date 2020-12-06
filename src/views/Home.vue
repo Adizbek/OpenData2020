@@ -3,7 +3,8 @@
     <transition-group :name="direction === 1? 'home-slide': 'home-slide-out'" mode="out-in">
       <HomeSlide1 key="1" @next="slide++" v-if="slide === 1 || isDev" class="mb-4"/>
 
-      <HomeSlide2 key="2" v-model="form" @priceInfo="onPriceInfo" @next="slide++" @prev="slide--" v-if="slide === 2 || isDev" class="mb-4"/>
+      <HomeSlide2 key="2" v-model="form" @priceInfo="onPriceInfo" @next="slide++" @prev="slide--"
+                  v-if="slide === 2 || isDev" class="mb-4"/>
     </transition-group>
   </div>
 </template>
@@ -16,6 +17,10 @@ import HomeSlide2 from '@/components/HomeSlide2'
 export default {
   name: 'Home',
   components: { HomeSlide2, HomeSlide1 },
+
+  mounted () {
+    this.checkSimilar()
+  },
 
   data () {
     return {
@@ -30,10 +35,39 @@ export default {
     }
   },
 
+  chimera: {
+    similar: {
+      auto: false,
+      url: '/vehicle/buyer/recommendations_by_url/'
+    }
+  },
+
   methods: {
-    onPriceInfo(prices) {
-      this.prices = prices;
-      this.slide++;
+    onPriceInfo (prices) {
+      this.prices = prices
+      this.slide++
+    },
+
+    checkSimilar () {
+      if (this.$route.query.similar) {
+        this.$chimera.similar.send({
+          url: this.$route.query.similar
+        }).then(({data}) => {
+          if(data.current_ad) {
+            this.form = {
+              brand_id: data.current_ad.brand,
+              model_id: data.current_ad.model,
+              transmission_type: data.current_ad.transmission_type,
+              manufactured_year: data.current_ad.manufactured_year,
+              driven_km: data.current_ad.driven_km,
+              condition: data.current_ad.condition,
+            }
+
+            this.slide++;
+          }
+          console.log(data)
+        })
+      }
     }
   },
 
@@ -83,6 +117,7 @@ export default {
   width: 600px;
   max-width: 90%;
 }
+
 .home-card-wide {
   border-radius: 4px;
   padding: 2rem;
