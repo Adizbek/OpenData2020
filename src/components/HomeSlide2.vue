@@ -72,7 +72,7 @@
       </div>
 
 
-      <div v-if="hasInfo" class="mt-5 form-row">
+      <div v-if="hasInfo" class="mt-3 form-row">
         <div class="col-6 col-sm-12 col-md-6">
           <line-chart
               :chartdata="chartInfo.chartKmValues"
@@ -82,6 +82,19 @@
           <line-chart
               :chartdata="chartInfo.chartYearValues"
               :options="chartInfo.chartYearOptions"/>
+        </div>
+      </div>
+
+      <div v-if="hasInfo">
+        <div style="font-size: 28px; line-height: 50px" class="mt-4">
+          <b>Boshqa takliflar</b>
+        </div>
+
+        <div :key="p.id" v-for="p in priceInfo.similar_ads" class="d-inline-block rec-item">
+          <a :href="p.url" style="color: #333" target="_blank">
+            {{ p.manufactured_year }} yil, {{ p.driven_km }} km,
+            <b>${{ toPrice(p.price_usd) || '0' }}</b>
+          </a>
         </div>
       </div>
     </div>
@@ -250,6 +263,16 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+.rec-item {
+  width: 210px;
+  border: 1px solid #dedede;
+  padding: 4px;
+  margin: 4px;
+  border-radius: 5px;
 
+  &:hover {
+    background: #e1edf9;
+  }
+}
 </style>
