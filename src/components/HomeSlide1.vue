@@ -5,7 +5,7 @@
       <img src="/imgs/thinking.png" style="max-width: 100%" width="300px">
 
       <div style="line-height: 2.5rem">
-        Narxni baholay olmayapsizmi? <br> Unda biz sizga yordam beramiz!
+        Mashinangiz narxni baholay olmayapsizmi? <br> Unda biz sizga yordam beramiz!
       </div>
 
       <b-button size="lg" variant="outline-primary" class="mt-4" @click="$emit('next')">
